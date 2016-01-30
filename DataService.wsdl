@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<definitions name="DataService" targetNamespace="urn:DataService" xmlns:tns="urn:DataService"  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:DBTest">
+      <xsd:element name="getData" type="xsd:string" />
+	  <xsd:element name="DataResponse" type="xsd:string" />	 	  
+	</xsd:schema>			
+  </types>
+  
+  <message name="getInfo">
+    <part name="RetData" type="tns:getData" />
+  </message>
+  
+  <message name="doDataResponse">
+    <part name="return" type="tns:DataResponse" />
+  </message>  
+  
+  <portType name="DataPort">
+    <operation name="getInfo">
+	  <input message="tns:getInfo" />
+	  <output message="tns:doDataResponse" />
+	</operation>
+  </portType>
+  
+  <binding name="DataBinding" type="tns:DataPort">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+	  <operation name="getInfo">
+	    <soap:operation soapAction="urn:DataAction" />
+		<input>
+		  <soap:body use="encoded" namespace="urn:DBTest" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />		  
+		</input>
+		<output>
+		  <soap:body use="encoded" namespace="urn:DBTest" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />		  
+		</output>
+	  </operation>
+  </binding>
+  
+  <service name="DataService">
+    <port name="DataPort" binding="tns:DataBinding">
+	  <soap:address location="http://localhost/phptest/DataService_server.php" />
+	</port>
+  </service>
+    
+</definitions>
